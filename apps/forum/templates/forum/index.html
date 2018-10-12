@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    {% load staticfiles %}
+    <meta charset="utf-8">
+    <title>HostPatrol</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="{% static 'forum/css/main.css' %}">
+    <script src="{% static 'forum/js/main.js' %}"></script>
+  </head>
+  <body>
+    <div id="container">
+      <h4>Login for HostPatrol</h4>
+      <div id="messages">
+        {% if messages %}
+        <ul class="messages">
+          {% for message in messages %}
+          {% if message.tags %}
+          <li class="{{ message.tags }}">{{ message }}</li>
+          {% endif %}
+          {% endfor %}
+        </ul>
+        {% endif %}
+      </div>
+      <div class="input_box">
+        <form action="{% url 'forum:login' %}" method="POST">
+          {% csrf_token %}
+          <table>
+            <tr>
+              <th></th>
+              <th>Please login below</th>
+            </tr>
+            <tr>
+              <td>
+                Email:
+              </td>
+              <td>
+                <input type="text" name="username">
+              </td>
+            </tr>
+            <tr>
+              <td>
+                Password:
+              </td>
+              <td>
+                <input type="password" name="password">
+              </td>
+            </tr>
+            <tr>
+              <td>
+              </td>
+              <td>
+                <input type="submit" value="Login">
+              </td>
+            </tr>
+          </table>
+          <a href={% url 'forum:register' %}>Create a new account</a>
+        </form>
+      </div>
+
+      <div>
+        <table>
+          <tr>
+            <th>Public Posts</th>
+          </tr>
+          <tr>
+            <td>Placeholder</td>
+          </tr>
+        </table>
+      </div>
+
+      {% if user.is_authenticated %}
+      <div>
+        <table>
+          <tr>
+            <th>Private Posts</th>
+          </tr>
+          <tr>
+            <td>Placeholder</td>
+          </tr>
+        </table>
+      </div>
+      {% endif %}
+
+    </div>
+  </body>
+</html>

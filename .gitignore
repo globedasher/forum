@@ -1,0 +1,10 @@
+tmp/
+*.log
+
+tags
+.DS_store
+env/
+*.pyc
+
+db.sqlite3
+db.sqlite3*

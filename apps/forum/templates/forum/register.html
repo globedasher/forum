@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>HostPatrol</title>
+    {% load staticfiles %}
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="{% static 'authentication/css/main.css' %}">
+    <script src="{% static 'authentication/js/main.js' %}"></script>
+  </head>
+  <body>
+    <div id="container">
+
+      <div id="registration">
+        <form action="{% url 'auth:register' %}" method="POST">
+          <div class="input_box">
+            {% csrf_token %}
+            <table>
+              <tr>
+                <th></th>
+                <th>Please register below</th>
+              </tr>
+              <tr>
+                <td> Email address: </td>
+                <td> <input type="text" name="email"> </td>
+              </tr>
+              <tr>
+                <td>
+                </td>
+                <td>
+                  <input type="submit" value="Register">
+                </td>
+              </tr>
+            </table>
+          </div>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>

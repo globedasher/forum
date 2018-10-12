@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>HostPatrol</title>
+    {% load staticfiles %}
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="{% static 'authentication/css/main.css' %}">
+    <script src="{% static 'authentication/js/main.js' %}"></script>
+  </head>
+  <body>
+    <div id="container">
+
+      <div id="controls" class="bars">
+        <div class="left">
+          <h3>{{ request.user.email }}</h3>
+        </div>
+        <div class="right">
+          {% if request.user.is_superuser %}
+            <a href={% url 'auth:users' %}>Users</a>
+            <a href={% url 'auth:invite' %}>Invite User</a>
+            <a href="{% url 'admin:index' %}">Admin</a>
+          {% endif %}
+          <a href={% url 'auth:logout' %}>Logout</a>
+        </div>
+      </div>
+      
+      <div id="messages">
+        {% if messages %}
+        <ul class="messages">
+          {% for message in messages %}
+          {% if message.tags %}
+          <li class="{{ message.tags }}">{{ message }}</li>
+          {% endif %}
+          {% endfor %}
+        </ul>
+        {% endif %}
+      </div>
+
+      <div class="input_box">
+        <a href={% url 'auth:mail_queue' %}>Reload</a>
+        <table>
+          <tr>
+            <th>Node order</th>
+            <th>Identity</th>
+            <th>Expiriation Date</th>
+          </tr>
+          {% if not mail_queue %}
+          <tr>
+            <td>No nodes</td>
+            <td>No nodes</td>
+            <td>No nodes</td>
+          </tr>
+          {% else %}
+          {% for item in mail_queue %}
+          <tr>
+            <td>{{ item.order }}</td>
+            <td>{{ item.ident }}</td>
+            <td>{{ item.date|date:"Y-m-d H:i:s.u"}}</td>
+          </tr>
+          {% endfor %}
+          {% endif %}
+        </table>
+        <a href={% url 'auth:home' %}>Home</a>
+      </div>
+
+      <div>
+        <h4>Interact with nodes in the queue.</h4>
+        <form action={% url 'auth:mail_queue' %} method='POST'>
+          {% csrf_token %}
+          <!--input type='text' name='ident' placeholder='Ident of node to
+            add.'><br-->
+          <select name='ident'>
+            <option value=''>Select an ident</option>
+            <option value='1'>1</option>
+            <option value='2'>2</option>
+            <option value='3'>3</option>
+            <option value='4'>4</option>
+            <option value='5'>5</option>
+          </select><br>
+          <input type='submit' value='Add Node'>
+        </form>
+      </div>
+
+    </div>
+  </body>
+</html>

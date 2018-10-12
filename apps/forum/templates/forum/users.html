@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>HostPatrol</title>
+    {% load staticfiles %}
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="{% static 'authentication/css/main.css' %}">
+    <script src="{% static 'authentication/js/main.js' %}"></script>
+  </head>
+  <body>
+    <div id="container">
+      <h4>User number: {{ request.user.id }} </h4>
+      <h4>User account: {{ request.user.email }}</h4>
+
+      {% for user in all_users %}
+      <p>
+        {{ user.id }}
+        {{ user.first_name }}
+        {{ user.last_name }}
+        {{ user.email }}
+        {{ user.employee.org }}
+      </p>
+      {% endfor %}
+
+    </div>
+    <ul>
+      {% if user.is_superuser %}
+      <li><a href="{% url 'admin:index' %}">Admin</a></li>
+      {% endif %}
+      <li><a href={% url 'auth:home' %}>Home</a></li>
+    </ul>
+  </body>
+</html>

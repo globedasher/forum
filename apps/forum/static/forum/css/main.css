@@ -1,0 +1,123 @@
+/* This file is the first CSS file Richard Morley created for this application
+   and it will carry the styling for the entire Tickets 'n Docs application.
+ */
+
+@media only screen and (max-width: 480px) {
+  #container { width: 100%; }
+  body { font-size: 1.5em; }
+  table { font-size: 1.5em; }
+}
+@media only screen and (min-width: 481px) {
+  #container { width: 100%; }
+  body { font-size: 1.2em; }
+  table { font-size: 1.2em; }
+}
+@media only screen and (min-width: 1024px) {
+  #container { width: 100%; }
+  body { font-size: 1em; }
+  table { font-size: 1em; }
+}
+
+
+/* This section defines the text color, background color, and font used on the
+ * application.
+ */
+
+.error {
+  color: red;
+}
+
+body {
+  text-align: center;
+  //background-color: #4c4c4c;
+  font-family: Impact, Charcoal, sans-serif;
+  font-family: Tahoma, Geneva, sans-serif;
+}
+
+h1 {
+  text-align: center;
+}
+/* Align the table with the center of the web browser. */
+table.center {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Color the table headders a specific color. */
+th {
+  background-color: green;
+  color: black;
+}
+
+/* Color every other row of the tickets table a different color. */
+tr:nth-child(odd) {
+  background-color: lightgreen;
+}
+
+/* Change the background color of a table row based on mouse hover. */
+tr:hover {
+  background-color: lightgreen;
+}
+
+/* Table line designs. */
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+
+/* The following line will style the table itself. I am attempting to make 
+ * all columns of the table carry the same dimensions.
+ */
+table {
+  margin: 0 auto;
+}
+
+th, td {
+  padding: 5px;
+}
+
+th {
+  text-align: center;
+}
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+li a {
+  color: black;
+}
+
+/* Choose the color of hyperlinks. */
+a {
+  color: black;
+}
+
+h3 {
+  display: inline;
+}
+
+input {
+  color: black;
+}
+
+.input_box {
+  width: 450px;
+  margin: auto;
+}
+
+.bars {
+  clear: both;
+  overflow: auto;
+  margin: 0 10px;
+}
+
+.left {
+  float:left;
+}
+
+.right {
+  float:right;
+}
