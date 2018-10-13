@@ -109,12 +109,17 @@ def register(request):
 
         print(body)
 
-        mail_result = send_mail(subject = "Invitation from: " + user.email # Subject
-                               , message = "Email"
-                               , from_email = "fm65cq@gmail.com" # From
-                               , recipient_list = ["globe.dasher@gmail.com"] # To
-                               , fail_silently=False
-                               , html_message=body # Message body
+        subject = "Invitation from: " + user.email # Subject
+        message = "Email"
+        from_email = "fm65cq@gmail.com" # From
+        recipient_list = ["globe.dasher@gmail.com"] # To
+
+        mail_result = send_mail(subject
+                               ,message
+                               ,from_email
+                               ,recipient_list
+                               ,html_message=body
+                               ,fail_silently=False
                                )
         #login(request, user)
         #print(mail_result)
