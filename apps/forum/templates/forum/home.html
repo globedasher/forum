@@ -5,8 +5,8 @@
     <title>HostPatrol</title>
     {% load staticfiles %}
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" href="{% static 'authentication/css/main.css' %}">
-    <script src="{% static 'authentication/js/main.js' %}"></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'forum/css/main.css' %}">
+    <script src="{% static 'forum/js/main.js' %}"></script>
   </head>
   <body>
     <div id="container">
@@ -17,12 +17,12 @@
         </div>
         <div class="right">
           {% if request.user.is_superuser %}
-            <a href={% url 'auth:users' %}>Users</a>
-            <a href={% url 'auth:invite' %}>Invite User</a>
-            <a href={% url 'auth:mail_queue' %}>Mail Queue</a>
+            <a href={% url 'forum:users' %}>Users</a>
+            <a href={% url 'forum:invite' %}>Invite User</a>
+            <a href={% url 'forum:mail_queue' %}>Mail Queue</a>
             <a href="{% url 'admin:index' %}">Admin</a>
           {% endif %}
-          <a href={% url 'auth:logout' %}>Logout</a>
+          <a href={% url 'forum:logout' %}>Logout</a>
         </div>
       </div>
       

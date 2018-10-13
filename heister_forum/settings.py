@@ -114,6 +114,17 @@ USE_L10N = True
 
 USE_TZ = True
 
+# Email settings
+# https://docs.djangoproject.com/en/2.0/ref/settings/#std:setting-EMAIL_HOST
+
+EMAIL_FILE_PATH=os.path.join(BASE_DIR, '../logs/')
+EMAIL_HOST="smtp.gmail.com"
+EMAIL_HOST_USER="fm65cq@gmail.com"
+EMAIL_HOST_PASSWORD="visitmebythesea"
+EMAIL_PORT=587
+EMAIL_USE_TLS=True
+
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/

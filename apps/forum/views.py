@@ -8,13 +8,14 @@ from django.db.models import Q
 import datetime
 
 from django.contrib.auth.models import User
+from .models import Post
 
 #from .models import User
 
 def index(request):
     # If the user is already authenticated, return them to the home page
     if request.user.is_authenticated:
-        return redirect(reverse('auth:home'))
+        return redirect(reverse('forum:home'))
     try:
         all_users = User.objects.all()
         context = { 'all_users': all_users }
@@ -25,7 +26,7 @@ def index(request):
 def home(request):
     if not request.user.is_authenticated:
         messages.error(request, "Please login first.")
-        return redirect(reverse('auth:index'))
+        return redirect(reverse('forum:index'))
     if request.user.is_superuser:
         pass
         #print("is superuser")
@@ -34,18 +35,20 @@ def home(request):
         print(request.user.email)
         user = User.objects.get(pk=request.user.pk)
         print("home else")
-        print(orgs)
-        for org in orgs:
-            print("org in orgs")
-            print(org.name)
-    context = {'orgs': orgs}
+
+    posts = Post.objects.all()
+    print(posts)
+    for post in posts:
+        print("post in posts")
+        print(post.name)
+    context = {'posts': posts}
     return render(request, "forum/home.html", context)
 
 def users(request):
     #print(request)
     if not request.user.is_authenticated:
         messages.error(request, "Please login first.")
-        return redirect(reverse('auth:index'))
+        return redirect(reverse('forum:index'))
     all_users = User.objects.all()
     context = { 'all_users': all_users }
     return render(request, "forum/users.html", context)
@@ -62,13 +65,13 @@ def login_view(request):
         if user is not None:
             login(request, user)
             messages.success(request, "Welcome")
-            return redirect(reverse('auth:home'))
+            return redirect(reverse('forum:home'))
         else:
             messages.error(request, "Login errors")
-            return redirect(reverse('auth:index'))
+            return redirect(reverse('forum:index'))
     else:
         messages.error(request, "Please login first.")
-        return redirect(reverse('auth:index'))
+        return redirect(reverse('forum:index'))
 
 
 
@@ -76,7 +79,7 @@ def logout_view(request):
     #del request.session['id']
     #del request.session['email']
     logout(request)
-    return redirect(reverse('auth:index'))
+    return redirect(reverse('forum:index'))
 
 
 
@@ -104,6 +107,8 @@ def register(request):
             finally:
                 f.close()
 
+        print(body)
+
         mail_result = send_mail(subject = "Invitation from: " + user.email # Subject
                                , message = "Email"
                                , from_email = "fm65cq@gmail.com" # From
@@ -119,10 +124,10 @@ def register(request):
             messages.success(request, "Email sent to " + request.POST['email'].lower())
             messages.success(request, "Only " + mail_result + " sent")
 
-        return redirect(reverse('auth:index'))
+        return redirect(reverse('forum:index'))
     else:
         messages.error(request, "Incorrect Http request.")
-        return redirect(reverse('auth:index'))
+        return redirect(reverse('forum:index'))
 
 
 #TODO: I need to build invite validation of form data...
@@ -144,10 +149,10 @@ def invite(request):
 
         #login(request, user)
         messages.success(request, "Successful invite!")
-        return redirect(reverse('auth:home'))
+        return redirect(reverse('forum:home'))
     else:
         messages.error(request, "Incorrect Http request.")
-        return redirect(reverse('auth:index'))
+        return redirect(reverse('forum:index'))
 
 def mail_queue(request):
     #print("Queue Request")
