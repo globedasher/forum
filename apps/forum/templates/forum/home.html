@@ -19,7 +19,6 @@
           {% if request.user.is_superuser %}
             <a href={% url 'forum:users' %}>Users</a>
             <a href={% url 'forum:invite' %}>Invite User</a>
-            <a href={% url 'forum:mail_queue' %}>Mail Queue</a>
             <a href="{% url 'admin:index' %}">Admin</a>
           {% endif %}
           <a href={% url 'forum:logout' %}>Logout</a>

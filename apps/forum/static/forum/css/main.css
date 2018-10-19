@@ -70,6 +70,7 @@ table, th, td {
  */
 table {
   margin: 0 auto;
+  width: 100%;
 }
 
 th, td {
@@ -103,10 +104,6 @@ input {
   color: black;
 }
 
-.input_box {
-  width: 450px;
-  margin: auto;
-}
 
 .bars {
   clear: both;

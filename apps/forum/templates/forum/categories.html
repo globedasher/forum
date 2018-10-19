@@ -49,29 +49,16 @@
       <div>
         <table>
           <tr>
-            <th>Public Categories</th>
+            <th>Placeholder</th>
           </tr>
+          {% for cat in categories %}
           <tr>
-            <td>Placeholder</td>
+            <td>{{ cat }}</td>
           </tr>
-          <tr>
-            <td><a href={% url "forum:categories" %}>Create a category</a></td>
-          </tr>
+          {% endfor %}
         </table>
       </div>
 
-      {% if user.is_authenticated %}
-      <div>
-        <table>
-          <tr>
-            <th>Private Categories</th>
-          </tr>
-          <tr>
-            <td>Placeholder</td>
-          </tr>
-        </table>
-      </div>
-      {% endif %}
 
     </div>
   </body>

@@ -13,5 +13,5 @@ urlpatterns  = [
     path('logout/', login_required(views.logout_view), name = "logout"),
     path('home/', login_required(views.home), name = "home"),
     path('users/', login_required(views.users), name = "users"),
-    path('mail_queue/', login_required(views.mail_queue), name = "mail_queue"),
+    path('categories/', login_required(views.categories), name = "categories"),
 ]

@@ -8,14 +8,15 @@ from django.db.models import Q
 import datetime
 
 from django.contrib.auth.models import User
-from .models import Post
+from .models import Category, Post
 
 #from .models import User
 
 def index(request):
     # If the user is already authenticated, return them to the home page
-    if request.user.is_authenticated:
-        return redirect(reverse('forum:home'))
+    # NOTE: commented out to make a single page app.
+    #if request.user.is_authenticated:
+        #return redirect(reverse('forum:index'))
     try:
         all_users = User.objects.all()
         context = { 'all_users': all_users }
@@ -57,21 +58,41 @@ def users(request):
 def login_view(request):
     if request.method == 'POST':
         username = request.POST['username']
-        print(username)
+        #print(username)
         password = request.POST['password']
-        print(password)
+        #print(password)
         user = authenticate(request, username=username, password=password)
-        print(user)
+        #print(user)
         if user is not None:
             login(request, user)
-            messages.success(request, "Welcome")
-            return redirect(reverse('forum:home'))
+            #messages.success(request, "Welcome")
+            return redirect(reverse('forum:index'))
         else:
             messages.error(request, "Login errors")
             return redirect(reverse('forum:index'))
     else:
         messages.error(request, "Please login first.")
         return redirect(reverse('forum:index'))
+
+
+def categories(request):
+    if request.method == "GET":
+        cats = Category.objects.all()
+        print("cats.count")
+        print(cats.count())
+        print("cats.count")
+        context = {
+                "categories": cats
+                }
+        print(context)
+        return render(request, "forum/categories.html", context)
+    if request.method == "POST":
+        print("POST!")
+        return redirect(reverse("forum:index"))
+    else:
+        messages.error(request, "Not allowed")
+        return redirect(reverse('forum:home'))
+
 
 
 
@@ -158,42 +179,3 @@ def invite(request):
     else:
         messages.error(request, "Incorrect Http request.")
         return redirect(reverse('forum:index'))
-
-def mail_queue(request):
-    #print("Queue Request")
-    context = zmq.Context()
-    socket = context.socket(zmq.REQ)
-    rc = socket.connect("ipc:///tmp/mail_queue_ipc")
-    #print(request.method)
-    if request.method == "GET":
-        socket.send(b"read_queue")
-        mail_queue = socket.recv()
-        mail_queue = eval(mail_queue)
-        #print(mail_queue)
-        context = {
-                "mail_queue": mail_queue
-                }
-        return render(request, 'forum/queue.html', context)
-    elif request.method == "POST":
-        if not request.POST["ident"]:
-            messages.error(request, "Select an ident")
-            socket.send(b"read_queue")
-            mail_queue = socket.recv()
-            mail_queue = eval(mail_queue)
-            context = { "mail_queue": mail_queue }
-            return render(request, 'forum/queue.html', context)
-        command = "create: %s" % (request.POST["ident"])
-        socket.send(str.encode(command))
-        service_response = socket.recv()
-        service_response = eval(service_response)
-
-        # After we send the node to the mail_queue, get the queue to display
-        # again.
-        socket.send(b"read_queue")
-        mail_queue = socket.recv()
-        mail_queue = eval(mail_queue)
-        #print(mail_queue)
-        context = {
-                "mail_queue": mail_queue
-                }
-        return render(request, 'forum/queue.html', context)

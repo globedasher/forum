@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 
 import os
 
+print("Running in Prod Mode")
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -25,7 +27,11 @@ SECRET_KEY = 'hn2#i9x@mesn7w_1gduys#mv@()#w0cqej)6$*7v(uwlznd!us'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['www.pureprune.com']
+
+# Set this to True to avoid transmitting the CSRF cookie over HTTP accidentally.
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
 
 
 # Application definition
@@ -76,8 +82,12 @@ WSGI_APPLICATION = 'heister_forum.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'heartbeat',
+        'USER': 'platform',
+        'PASSWORD': 'flatfruit',
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
 
@@ -129,4 +139,10 @@ EMAIL_USE_TLS=True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, "static/")
+
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = False
+
+# Email settings
+# https://docs.djangoproject.com/en/2.0/ref/settings/#std:setting-EMAIL_HOST
