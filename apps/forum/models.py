@@ -9,6 +9,7 @@ from datetime import datetime
 
 class Category(models.Model):
     name = models.CharField(max_length=100)
+    private = models.CharField(max_length=10)
 
 
 class Post(models.Model):
@@ -17,9 +18,9 @@ class Post(models.Model):
     """
     owner = models.ForeignKey(User
                             ,on_delete='CASCADE'
-                            ,related_name="org_owner")
+                            ,related_name="post_owner")
 
-    category = models.ForeignKey(Category
+    category = models.ForeignKey('Category'
                                 ,on_delete='CASCADE'
                                 ,related_name="categories")
 

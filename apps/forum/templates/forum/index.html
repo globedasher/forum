@@ -51,9 +51,17 @@
           <tr>
             <th>Public Categories</th>
           </tr>
-          <tr>
-            <td>Placeholder</td>
-          </tr>
+          {% if cats.count > 0 %}
+            {% for cat in cats %}
+            <tr>
+              <td>Placeholder</td>
+            </tr>
+            {% endfor %}
+          {% else %}
+            <tr>
+              <td>No public categories</td>
+            </tr>
+          {% endif %}
           <tr>
             <td><a href={% url "forum:categories" %}>Create a category</a></td>
           </tr>
@@ -68,6 +76,9 @@
           </tr>
           <tr>
             <td>Placeholder</td>
+          </tr>
+          <tr>
+            <td><a href={% url "forum:categories" %}>Create a category</a></td>
           </tr>
         </table>
       </div>
