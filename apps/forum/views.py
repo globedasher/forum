@@ -76,19 +76,30 @@ def login_view(request):
 
 
 def categories(request):
+    """
+    Function to create new categories.
+    """
     if request.method == "GET":
         cats = Category.objects.all()
         print("cats.count")
         print(cats.count())
-        print("cats.count")
+        #print("cats.count")
         context = {
                 "categories": cats
                 }
-        print(context)
+        #print(context)
         return render(request, "forum/categories.html", context)
+
     if request.method == "POST":
         print("POST!")
-        return redirect(reverse("forum:index"))
+        #print(request.POST["name"])
+        tuple_return = Category.objects.register(request.POST)
+        if tuple_return[0] == False:
+            messages.error(request, "Category Created")
+            return redirect(reverse('forum:home'))
+        elif tuple_return[0] == True:
+            messages.error(request, "Category Exists Already")
+            return redirect(reverse("forum:categories"))
     else:
         messages.error(request, "Not allowed")
         return redirect(reverse('forum:home'))

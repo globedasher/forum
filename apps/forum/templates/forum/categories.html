@@ -47,16 +47,12 @@
 
 
       <div>
-        <table>
-          <tr>
-            <th>Placeholder</th>
-          </tr>
-          {% for cat in categories %}
-          <tr>
-            <td>{{ cat }}</td>
-          </tr>
-          {% endfor %}
-        </table>
+        <form action="{% url 'forum:categories' %}" method="POST">
+          {% csrf_token %}
+          <label>Category name:</label>
+          <input type="text" name="name" />
+          <input type="submit" value="Login" />
+        </form>
       </div>
 
 

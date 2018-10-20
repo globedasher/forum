@@ -62,9 +62,11 @@
               <td>No public categories</td>
             </tr>
           {% endif %}
-          <tr>
-            <td><a href={% url "forum:categories" %}>Create a category</a></td>
-          </tr>
+          {% if user.is_authenticated %}
+            <tr>
+              <td><a href={% url "forum:categories" %}>Create a category</a></td>
+            </tr>
+          {% endif %}
         </table>
       </div>
 
