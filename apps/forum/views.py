@@ -19,7 +19,11 @@ def index(request):
         #return redirect(reverse('forum:index'))
     try:
         all_users = User.objects.all()
-        context = { 'all_users': all_users }
+        cats = Category.objects.all()
+        context = {
+                'all_users': all_users
+                ,'cats': cats
+                }
         return render(request, 'forum/index.html', context)
     except:
         return render(request, 'forum/index.html')
@@ -93,16 +97,17 @@ def categories(request):
     if request.method == "POST":
         print("POST!")
         #print(request.POST["name"])
-        tuple_return = Category.objects.register(request.POST)
+        print(request.user)
+        tuple_return = Category.objects.register(request.POST, request.user)
         if tuple_return[0] == False:
-            messages.error(request, "Category Created")
-            return redirect(reverse('forum:home'))
-        elif tuple_return[0] == True:
             messages.error(request, "Category Exists Already")
             return redirect(reverse("forum:categories"))
+        elif tuple_return[0] == True:
+            messages.error(request, "Category Created")
+            return redirect(reverse('forum:index'))
     else:
         messages.error(request, "Not allowed")
-        return redirect(reverse('forum:home'))
+        return redirect(reverse('forum:index'))
 
 
 

@@ -51,10 +51,10 @@
           <tr>
             <th>Public Categories</th>
           </tr>
-          {% if cats.count > 0 %}
+          {% if cats %}
             {% for cat in cats %}
             <tr>
-              <td>Placeholder</td>
+              <td>{{ cat.name }}</td>
             </tr>
             {% endfor %}
           {% else %}
