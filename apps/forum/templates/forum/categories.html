@@ -52,11 +52,29 @@
           <label>Category name:</label>
           <input type="text" name="name" />
           <label>Private:</label>
-          <input type="checkbox" name="private" value="True">
+          <select name="private">
+            <option value="False" selected>Public</option>
+            <option value="True">Private</option>
+          </select>
           <input type="submit" value="Login" />
         </form>
         <a href="{% url 'forum:index' %}">Back</a>
       </div>
+
+      {% if cats %}
+        <h4>Extant Categories</h4>
+      {% endif %}
+
+      {% for cat in cats %}
+        <p>{{ cat.name }}
+        {% if cat.private %}
+          Private
+        {% elif not cat.private %}
+          Public
+        {% endif %}
+        </p>
+
+      {% endfor %}
 
 
     </div>

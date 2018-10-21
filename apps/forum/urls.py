@@ -13,6 +13,8 @@ urlpatterns  = [
     path('logout/', login_required(views.logout_view), name = "logout"),
     path('home/', login_required(views.home), name = "home"),
     path('users/', login_required(views.users), name = "users"),
-    path('categories/', login_required(views.categories), name = "categories"),
     path('categories/<int:category_id>', login_required(views.categories), name = "categories"),
+    path('categories/', login_required(views.categories), name = "categories"),
+    path('post/<int:post_id>', login_required(views.post), name = "post"),
+    path('post/', login_required(views.post), name = "post"),
 ]

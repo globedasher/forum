@@ -47,14 +47,27 @@
 
 
       <div>
-        <p>{{ cats.name }}</p>
-        <p>{{ cats.created_by }}</p>
-        <p>{{ cats.created_at }}</p>
-        <p>{{ cats.updated_at }}</p>
-        <p>{{ cats.posts }}</p>
+        <form action="{% url 'forum:categories' %}" method="POST">
+          {% csrf_token %}
+          <label>Category name:</label>
+          <input type="text" name="name" />
+          <label>Private:</label>
+          <select name="private">
+            <option value="False" selected>Public</option>
+            <option value="True">Private</option>
+          </select>
+          <input type="submit" value="Login" />
+        </form>
+        <a href="{% url 'forum:index' %}">Back</a>
       </div>
 
-      <a href={% url "forum:post" %}>Create Post</a>
+      {% if cats %}
+        <h4>Extant Categories</h4>
+      {% endif %}
+
+      {% for cat in cats %}
+        <p>{{ cat.name }}</p>
+      {% endfor %}
 
 
     </div>

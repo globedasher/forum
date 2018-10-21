@@ -15,21 +15,22 @@ from .models import Category, Post
 def index(request):
     # If the user is already authenticated, return them to the home page
     # NOTE: commented out to make a single page app.
-    #if request.user.is_authenticated:
-        #return redirect(reverse('forum:index'))
-    try:
+    if request.method == "GET":
+
         all_users = User.objects.all()
         public_cats = Category.objects.filter(private=False)
-        print(public_cats)
+        #print(public_cats)
         private_cats = Category.objects.filter(private=True)
-        print(private_cats)
+        #print(private_cats)
+        print("index")
         context = {
                 'all_users': all_users
                 ,'public_cats': public_cats
                 ,'private_cats': private_cats
                 }
         return render(request, 'forum/index.html', context)
-    except:
+    else:
+        messages.error(request, "Not allowed")
         return render(request, 'forum/index.html')
 
 def home(request):
@@ -89,7 +90,9 @@ def categories(request, category_id=0):
     """
     if request.method == "GET":
         if category_id is 0:
-            return render(request, "forum/categories.html")
+            print("getting cats")
+            context = {"cats": Category.objects.all()}
+            return render(request, "forum/categories.html", context)
         elif category_id > 0:
             cats = Category.objects.get(pk=category_id)
             context = {
@@ -104,7 +107,7 @@ def categories(request, category_id=0):
         #print(request.POST["name"])
         #print(request.user)
         print(request.POST)
-        print(request.POST.getlist["private"])
+        print(request.POST["private"])
         cat = Category.objects.filter(name=request.POST["name"])
         #print(cat.count())
         if cat.count() is 0:
@@ -122,6 +125,18 @@ def categories(request, category_id=0):
         messages.error(request, "Not allowed")
         return redirect(reverse('forum:index'))
 
+def post(request, post_id=0):
+    if request.method == "GET":
+        print("GET")
+        context = {"post": Post.objects.filter()}
+        return render(request, "forum/post.html", context)
+    elif request.method == "POST":
+        print("POST")
+        context = {"post": Post.objects.filter()}
+        return render(request, "forum/post.html", context)
+    else:
+        messages.error(request, "Not allowed")
+        return redirect(reverse('forum:index'))
 
 
 
