@@ -47,15 +47,11 @@
 
 
       <div>
-        <form action="{% url 'forum:categories' %}" method="POST">
-          {% csrf_token %}
-          <label>Category name:</label>
-          <input type="text" name="name" />
-          <label>Private:</label>
-          <input type="checkbox" name="private" value="True">
-          <input type="submit" value="Login" />
-        </form>
-        <a href="{% url 'forum:index' %}">Back</a>
+        <p>{{ cats.name }}</p>
+        <p>{{ cats.created_by }}</p>
+        <p>{{ cats.created_at }}</p>
+        <p>{{ cats.updated_at }}</p>
+        <p>{{ cats.posts }}</p>
       </div>
 
 

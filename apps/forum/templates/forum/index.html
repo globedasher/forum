@@ -51,10 +51,10 @@
           <tr>
             <th>Public Categories</th>
           </tr>
-          {% if cats %}
-            {% for cat in cats %}
+          {% if public_cats %}
+            {% for cat in public_cats %}
             <tr>
-              <td>{{ cat.name }}</td>
+              <td><a href={% url "forum:categories" cat.id %}>{{ cat.name }}</a></td>
             </tr>
             {% endfor %}
           {% else %}
@@ -76,9 +76,22 @@
           <tr>
             <th>Private Categories</th>
           </tr>
-          <tr>
-            <td>Placeholder</td>
-          </tr>
+          {% if private_cats %}
+            {% for cat in private_cats %}
+            <tr>
+              <td><a href={% url "forum:categories" cat.id %}>{{ cat.name }}</a></td>
+            </tr>
+            {% endfor %}
+          {% else %}
+            <tr>
+              <td>No private categories</td>
+            </tr>
+          {% endif %}
+          {% if user.is_authenticated %}
+            <tr>
+              <td><a href={% url "forum:categories" %}>Create a category</a></td>
+            </tr>
+          {% endif %}
           <tr>
             <td><a href={% url "forum:categories" %}>Create a category</a></td>
           </tr>

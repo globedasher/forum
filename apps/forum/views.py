@@ -5,7 +5,7 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth import views as auth_views
 from django.db.models import Q
-import datetime
+import datetime, sys
 
 from django.contrib.auth.models import User
 from .models import Category, Post
@@ -19,10 +19,14 @@ def index(request):
         #return redirect(reverse('forum:index'))
     try:
         all_users = User.objects.all()
-        cats = Category.objects.all()
+        public_cats = Category.objects.filter(private=False)
+        print(public_cats)
+        private_cats = Category.objects.filter(private=True)
+        print(private_cats)
         context = {
                 'all_users': all_users
-                ,'cats': cats
+                ,'public_cats': public_cats
+                ,'private_cats': private_cats
                 }
         return render(request, 'forum/index.html', context)
     except:
@@ -79,32 +83,41 @@ def login_view(request):
         return redirect(reverse('forum:index'))
 
 
-def categories(request):
+def categories(request, category_id=0):
     """
     Function to create new categories.
     """
     if request.method == "GET":
-        cats = Category.objects.all()
-        print("cats.count")
-        print(cats.count())
-        #print("cats.count")
-        context = {
-                "categories": cats
-                }
-        #print(context)
-        return render(request, "forum/categories.html", context)
+        if category_id is 0:
+            return render(request, "forum/categories.html")
+        elif category_id > 0:
+            cats = Category.objects.get(pk=category_id)
+            context = {
+                    "cats": cats
+                    }
+            #print(context)
+            return render(request, "forum/category.html", context)
+
 
     if request.method == "POST":
         print("POST!")
         #print(request.POST["name"])
-        print(request.user)
-        tuple_return = Category.objects.register(request.POST, request.user)
-        if tuple_return[0] == False:
-            messages.error(request, "Category Exists Already")
-            return redirect(reverse("forum:categories"))
-        elif tuple_return[0] == True:
+        #print(request.user)
+        print(request.POST)
+        print(request.POST.getlist["private"])
+        cat = Category.objects.filter(name=request.POST["name"])
+        #print(cat.count())
+        if cat.count() is 0:
+            create_return = Category(name=request.POST["name"]
+                    , private=request.POST["private"]
+                    , created_by=request.user)
+            create_return.save()
             messages.error(request, "Category Created")
             return redirect(reverse('forum:index'))
+        else:
+            messages.error(request, "Category Exists Already")
+            return redirect(reverse("forum:categories"))
+
     else:
         messages.error(request, "Not allowed")
         return redirect(reverse('forum:index'))
