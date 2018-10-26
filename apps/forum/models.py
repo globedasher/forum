@@ -27,11 +27,13 @@ class Post(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     owner = models.ForeignKey(User
                             ,on_delete='CASCADE'
-                            ,related_name="post_owner")
+                            ,related_name="post_owner"
+                            )
 
-    category = models.ForeignKey('Category'
+    category = models.ForeignKey(Category
                                 ,on_delete='CASCADE'
-                                ,related_name="categories")
+                                ,related_name="categories"
+                                )
 
     title = models.CharField(max_length=100)
     body = models.CharField(max_length=5000)

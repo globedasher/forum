@@ -45,6 +45,16 @@
 
     <div id="container">
 
+      {% if post %}
+        <p>POST(S)</p>
+      {% else %}
+        <p>NO POST(S)</p>
+      {% endif %}
+
+      {% for po in post %}
+        {{ po.title }}
+        {{ po.body }}
+      {% endfor %}
 
       <div>
         <p>{{ cats.name }}</p>

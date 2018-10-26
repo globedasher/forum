@@ -10,49 +10,60 @@
   </head>
   <body>
 
-    <div id="controls" class="bars">
-      <div class="left">
-        <h3>{{ request.user.email }}</h3>
-      </div>
-      <div id="messages">
-        {% if messages %}
-        <ul class="messages">
-          {% for message in messages %}
-          {% if message.tags %}
-          <li class="{{ message.tags }}">{{ message }}</li>
-          {% endif %}
-          {% endfor %}
-        </ul>
-        {% endif %}
-      </div>
-      <div class="right">
-        {% if not request.user.is_authenticated %}
-          <form action="{% url 'forum:login' %}" method="POST">
-            {% csrf_token %}
-            <label>Email:</label>
-            <input type="text" name="username">
-            <label>Password:</label>
-            <input type="password" name="password">
-            <input type="submit" value="Login">
-          </form>
-        {% elif request.user.is_superuser %}
-          <a href={% url 'forum:users' %}>Users</a>
-          <a href="{% url 'admin:index' %}">Admin</a>
-          <a href={% url 'forum:logout' %}>Logout</a>
-        {% endif %}
-      </div>
-    </div>
-
     <div id="container">
 
-
-      <div>
-        <p>{{ cats.name }}</p>
-        <p>{{ cats.created_by }}</p>
-        <p>{{ cats.created_at }}</p>
-        <p>{{ cats.updated_at }}</p>
-        <p>{{ cats.posts }}</p>
+      <div id="controls" class="bars">
+        <div class="left">
+          <h3>{{ request.user.email }}</h3>
+        </div>
+        <div id="messages">
+          {% if messages %}
+          <ul class="messages">
+            {% for message in messages %}
+            {% if message.tags %}
+            <li class="{{ message.tags }}">{{ message }}</li>
+            {% endif %}
+            {% endfor %}
+          </ul>
+          {% endif %}
+        </div>
+        <div class="right">
+          {% if not request.user.is_authenticated %}
+            <form action="{% url 'forum:login' %}" method="POST">
+              {% csrf_token %}
+              <label>Email:</label>
+              <input type="text" name="username">
+              <label>Password:</label>
+              <input type="password" name="password">
+              <input type="submit" value="Login">
+            </form>
+          {% elif request.user.is_superuser %}
+            <a href={% url 'forum:users' %}>Users</a>
+            <a href="{% url 'admin:index' %}">Admin</a>
+            <a href={% url 'forum:logout' %}>Logout</a>
+          {% endif %}
+        </div>
       </div>
+
+
+      <h3>{{cat.name}}</h3>
+
+      {% for p in post %}
+      <div class="card">
+        <h3>{{ p.title }}</h3>
+        <p>{{ p.body }}</p>
+      </div>
+      {% endfor %}
+
+      <form action={% url "forum:post" cat.id %} method="POST">
+        {% csrf_token %}
+        <label>Title:</label>
+        <input type="text" name="title"></br>
+        <label>Message:</label>
+        <textarea rows="10" cols="100" name="body">
+        </textarea>
+        <input type="submit" value="Post">
+      </form>
 
       <a href={% url "forum:post" %}>Create Post</a>
 

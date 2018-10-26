@@ -94,9 +94,11 @@ def categories(request, category_id=0):
             context = {"cats": Category.objects.all()}
             return render(request, "forum/categories.html", context)
         elif category_id > 0:
-            cats = Category.objects.get(pk=category_id)
+            #post = Post.objects.get(category__pk=category_id)
+            post = Post.objects.filter(category__id=category_id)
             context = {
-                    "cats": cats
+                    "post": post,
+                    "cat": Category.objects.get(id=category_id)
                     }
             #print(context)
             return render(request, "forum/category.html", context)
@@ -125,15 +127,21 @@ def categories(request, category_id=0):
         messages.error(request, "Not allowed")
         return redirect(reverse('forum:index'))
 
-def post(request, post_id=0):
+def post(request, category_id=0):
     if request.method == "GET":
         print("GET")
         context = {"post": Post.objects.filter()}
         return render(request, "forum/post.html", context)
     elif request.method == "POST":
-        print("POST")
-        context = {"post": Post.objects.filter()}
-        return render(request, "forum/post.html", context)
+        #print("POST")
+        owner = request.user
+        category = Category.objects.get(pk=category_id)
+        title = request.POST["title"]
+        body = request.POST["body"]
+        new_post = Post(owner=owner, category=category, title=title, body=body)
+        new_post.save()
+        return redirect(reverse('forum:index'))
+
     else:
         messages.error(request, "Not allowed")
         return redirect(reverse('forum:index'))

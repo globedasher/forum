@@ -15,6 +15,6 @@ urlpatterns  = [
     path('users/', login_required(views.users), name = "users"),
     path('categories/<int:category_id>', login_required(views.categories), name = "categories"),
     path('categories/', login_required(views.categories), name = "categories"),
-    path('post/<int:post_id>', login_required(views.post), name = "post"),
+    path('post/<int:category_id>', login_required(views.post), name = "post"),
     path('post/', login_required(views.post), name = "post"),
 ]
