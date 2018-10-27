@@ -8,6 +8,15 @@ import sys
 
 # Create your models here.
 
+class CatMan(models.Manager):
+
+    def post_count(self, cat=0):
+        if cat == 0:
+            return 0
+        else:
+            post_count = Post.objects.filter(category__id=cat).count()
+            return post_count
+
 class Category(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -16,6 +25,8 @@ class Category(models.Model):
     created_by = models.ForeignKey(User
                             ,on_delete='PROTECT'
                             ,related_name="created")
+
+    objects = CatMan()
 
 
 

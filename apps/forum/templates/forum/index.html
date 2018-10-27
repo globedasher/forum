@@ -10,10 +10,31 @@
   </head>
   <body>
 
-    <div id="controls" class="bars">
-      <div class="left">
-        <h3>{{ request.user.email }}</h3>
+    <div id="container">
+      <div id="controls" class="bars">
+        <div class="left">
+          <h3>{{ request.user.email }}</h3>
+        </div>
+
+        <div class="right">
+          {% if not request.user.is_authenticated %}
+            <form action="{% url 'forum:login' %}" method="POST">
+              {% csrf_token %}
+              <label>Email:</label>
+              <input type="text" name="username">
+              <label>Password:</label>
+              <input type="password" name="password">
+              <input type="submit" value="Login">
+            </form>
+          {% elif request.user.is_superuser %}
+            <a href={% url 'forum:users' %}>Users</a>
+            <a href="{% url 'admin:index' %}">Admin</a>
+            <a href={% url 'forum:logout' %}>Logout</a>
+          {% endif %}
+        </div>
       </div>
+
+
       <div id="messages">
         {% if messages %}
         <ul class="messages">
@@ -25,26 +46,8 @@
         </ul>
         {% endif %}
       </div>
-      <div class="right">
-        {% if not request.user.is_authenticated %}
-          <form action="{% url 'forum:login' %}" method="POST">
-            {% csrf_token %}
-            <label>Email:</label>
-            <input type="text" name="username">
-            <label>Password:</label>
-            <input type="password" name="password">
-            <input type="submit" value="Login">
-          </form>
-        {% elif request.user.is_superuser %}
-          <a href={% url 'forum:users' %}>Users</a>
-          <a href="{% url 'admin:index' %}">Admin</a>
-          <a href={% url 'forum:logout' %}>Logout</a>
-        {% endif %}
-      </div>
-    </div>
 
-    <div id="container">
-
+      {{ pub_count }}
 
       <div>
         <table>
@@ -55,6 +58,7 @@
             {% for cat in public_cats %}
             <tr>
               <td><a href={% url "forum:categories" cat.id %}>{{ cat.name }}</a></td>
+              <td>{{ cat.pub_count }}</td>
             </tr>
             {% endfor %}
           {% else %}
@@ -75,6 +79,7 @@
             {% for cat in private_cats %}
             <tr>
               <td><a href={% url "forum:categories" cat.id %}>{{ cat.name }}</a></td>
+              <td>{{ cat.pri_count }}</td>
             </tr>
             {% endfor %}
           {% else %}

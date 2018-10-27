@@ -55,18 +55,18 @@
       </div>
       {% endfor %}
 
-      <form action={% url "forum:post" cat.id %} method="POST">
-        {% csrf_token %}
-        <label>Title:</label>
-        <input type="text" name="title"></br>
-        <label>Message:</label>
-        <textarea rows="10" cols="100" name="body">
-        </textarea>
-        <input type="submit" value="Post">
-      </form>
-
-      <a href={% url "forum:post" %}>Create Post</a>
-
+      {% if user.is_authenticated %}
+        <form action={% url "forum:post" cat.id %} method="POST">
+          {% csrf_token %}
+          <label>Title:</label>
+          <input type="text" name="title"></br>
+          <label>Message:</label>
+          <textarea rows="10" cols="100" name="body">
+          </textarea>
+          <input type="submit" value="Post">
+        </form>
+      {% endif %}
+      <a href={% url "forum:index" %}>Back</a>
 
     </div>
   </body>

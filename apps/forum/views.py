@@ -13,21 +13,25 @@ from .models import Category, Post
 #from .models import User
 
 def index(request):
-    # If the user is already authenticated, return them to the home page
-    # NOTE: commented out to make a single page app.
     if request.method == "GET":
-
-        all_users = User.objects.all()
+        context = {}
+        # Get all public categories.
         public_cats = Category.objects.filter(private=False)
-        #print(public_cats)
-        private_cats = Category.objects.filter(private=True)
-        #print(private_cats)
-        print("index")
-        context = {
-                'all_users': all_users
-                ,'public_cats': public_cats
-                ,'private_cats': private_cats
-                }
+        context["public_cats"] = public_cats
+        # Add the count of each post to the category object so we can list it
+        # in the UI.
+        for cat in public_cats:
+            cat.pub_count = Category.objects.post_count(cat.id)
+
+        # Get all private categories if the user is authenticated..
+        if request.user.is_authenticated:
+            private_cats = Category.objects.filter(private=True)
+            context["private_cats"] = private_cats
+            # Add the count of each post to the category object so we can list
+            # it in the UI.
+            for cat in private_cats:
+                cat.pri_count = Category.objects.post_count(cat.id)
+
         return render(request, 'forum/index.html', context)
     else:
         messages.error(request, "Not allowed")
@@ -74,7 +78,7 @@ def login_view(request):
         #print(user)
         if user is not None:
             login(request, user)
-            #messages.success(request, "Welcome")
+            messages.success(request, "Welcome")
             return redirect(reverse('forum:index'))
         else:
             messages.error(request, "Login errors")
@@ -140,7 +144,7 @@ def post(request, category_id=0):
         body = request.POST["body"]
         new_post = Post(owner=owner, category=category, title=title, body=body)
         new_post.save()
-        return redirect(reverse('forum:index'))
+        return redirect(reverse('forum:categories', args=[category_id]))
 
     else:
         messages.error(request, "Not allowed")
