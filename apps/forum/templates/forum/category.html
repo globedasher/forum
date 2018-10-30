@@ -16,17 +16,6 @@
         <div class="left">
           <h3>{{ request.user.email }}</h3>
         </div>
-        <div id="messages">
-          {% if messages %}
-          <ul class="messages">
-            {% for message in messages %}
-            {% if message.tags %}
-            <li class="{{ message.tags }}">{{ message }}</li>
-            {% endif %}
-            {% endfor %}
-          </ul>
-          {% endif %}
-        </div>
         <div class="right">
           {% if not request.user.is_authenticated %}
             <form action="{% url 'forum:login' %}" method="POST">
@@ -45,28 +34,44 @@
         </div>
       </div>
 
+      <div id="messages">
+        {% if messages %}
+        <ul class="messages">
+          {% for message in messages %}
+          {% if message.tags %}
+          <li class="{{ message.tags }}">{{ message }}</li>
+          {% endif %}
+          {% endfor %}
+        </ul>
+        {% endif %}
+      </div>
 
-      <h3>{{cat.name}}</h3>
+      <div class="card cat_title">
+        <h3>{{cat.name}}</h3>
+      </div>
+
+      <a href={% url "forum:post" cat.id %}>Create Post</a>
+      <a href={% url "forum:index" %}>Back</a>
 
       {% for p in post %}
-      <div class="card">
-        <h3>{{ p.title }}</h3>
-        <p>{{ p.body }}</p>
-      </div>
+      <table>
+        <tr>
+          <td class="table_title">
+            <h3>{{ p.title }}</h3>
+          </td>
+          <td class="table_title">
+          </td>
+        </tr>
+        <tr>
+          <td class="poster">
+            <a href="user">{{ p.owner.username }}</a>
+            <h6>Submitted: {{ p.created_at }}</h6>
+          </td>
+          <td>{{ p.body }}</td>
+        </tr>
+      </table>
       {% endfor %}
 
-      {% if user.is_authenticated %}
-        <form action={% url "forum:post" cat.id %} method="POST">
-          {% csrf_token %}
-          <label>Title:</label>
-          <input type="text" name="title"></br>
-          <label>Message:</label>
-          <textarea rows="10" cols="100" name="body">
-          </textarea>
-          <input type="submit" value="Post">
-        </form>
-      {% endif %}
-      <a href={% url "forum:index" %}>Back</a>
 
     </div>
   </body>

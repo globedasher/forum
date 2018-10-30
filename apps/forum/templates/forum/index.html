@@ -49,10 +49,11 @@
 
       {{ pub_count }}
 
-      <div>
+      <div class="main-tables">
         <table>
           <tr>
             <th>Public Categories</th>
+            <th>Posts</th>
           </tr>
           {% if public_cats %}
             {% for cat in public_cats %}
@@ -70,10 +71,11 @@
       </div>
 
       {% if user.is_authenticated %}
-      <div>
+      <div class="main-tables">
         <table>
           <tr>
             <th>Private Categories</th>
+            <th>Posts</th>
           </tr>
           {% if private_cats %}
             {% for cat in private_cats %}

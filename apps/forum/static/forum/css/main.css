@@ -27,12 +27,32 @@
  * application.
  */
 
+.main-tables {
+  margin: 5px 0;
+  padding: 5px;
+}
+
+.poster {
+  width: 30%;
+}
+
 .card {
   border: 1px solid black;
+  margin: 5px 0;
+  padding: 5px;
 }
 
 .error {
   color: red;
+}
+
+.cat_title {
+  border: 3px solid black;
+}
+
+.table_title{
+  border: 0;
+  text-align: left;
 }
 
 body {
@@ -53,7 +73,7 @@ table.center {
 
 /* Color the table headders a specific color. */
 th {
-  /*background-color: green;*/
+  background-color: white;
   color: black;
 }
 
@@ -64,7 +84,11 @@ tr:nth-child(odd) {
 
 /* Change the background color of a table row based on mouse hover. */
 tr:hover {
-  /*background-color: lightgreen;*/
+  background-color: lightgreen;
+}
+
+table:hover {
+  background-color: lightgreen;
 }
 
 /* Table line designs. */

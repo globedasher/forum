@@ -134,7 +134,8 @@ def categories(request, category_id=0):
 def post(request, category_id=0):
     if request.method == "GET":
         print("GET")
-        context = {"post": Post.objects.filter()}
+        print(category_id)
+        context = {"category_id": category_id}
         return render(request, "forum/post.html", context)
     elif request.method == "POST":
         #print("POST")
@@ -144,6 +145,7 @@ def post(request, category_id=0):
         body = request.POST["body"]
         new_post = Post(owner=owner, category=category, title=title, body=body)
         new_post.save()
+        messages.success(request, "Posted")
         return redirect(reverse('forum:categories', args=[category_id]))
 
     else:

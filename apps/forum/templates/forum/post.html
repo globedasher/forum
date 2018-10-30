@@ -45,27 +45,17 @@
 
     <div id="container">
 
-      {% if post %}
-        <p>POST(S)</p>
-      {% else %}
-        <p>NO POST(S)</p>
-      {% endif %}
+      <form action={% url "forum:post" category_id %} method="POST">
+        {% csrf_token %}
+        <label>Title:</label>
+        <input type="text" name="title"></br>
+        <label>Message:</label>
+        <textarea rows="7" cols="100" name="body">
+        </textarea>
+        <input type="submit" value="Post">
+      </form>
 
-      {% for po in post %}
-        {{ po.title }}
-        {{ po.body }}
-      {% endfor %}
-
-      <div>
-        <p>{{ cats.name }}</p>
-        <p>{{ cats.created_by }}</p>
-        <p>{{ cats.created_at }}</p>
-        <p>{{ cats.updated_at }}</p>
-        <p>{{ cats.posts }}</p>
-      </div>
-
-      <a href={% url "forum:post" %}>Create Post</a>
-
+      <a href={% url "forum:index" %}>Back</a>
 
     </div>
   </body>
