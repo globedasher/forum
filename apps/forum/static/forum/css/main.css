@@ -4,13 +4,13 @@
 
 @media only screen and (max-width: 480px) {
   #container { width: 100%; }
-  body { font-size: 1.5em; }
-  table { font-size: 1.5em; }
+  body { font-size: 1em; }
+  table { font-size: 1em; }
 }
 @media only screen and (min-width: 481px) {
   #container { width: 100%; }
-  body { font-size: 1.2em; }
-  table { font-size: 1.2em; }
+  body { font-size: 1em; }
+  table { font-size: 1em; }
 }
 @media only screen and (min-width: 1024px) {
   #container { 
@@ -87,7 +87,7 @@ tr:hover {
   background-color: lightgreen;
 }
 
-table:hover {
+.table-table:hover {
   background-color: lightgreen;
 }
 

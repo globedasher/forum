@@ -62,19 +62,23 @@
       </div>
 
       {% if cats %}
-        <h4>Extant Categories</h4>
+        <h4>Categories</h4>
       {% endif %}
 
+      <table>
+
       {% for cat in cats %}
-        <p>{{ cat.name }}
+        <tr>
+          <td>{{ cat.name }}</td>
         {% if cat.private %}
-          Private
-        {% elif not cat.private %}
-          Public
+          <td>x</td>
+        {% else %}
+          <td></td>
         {% endif %}
-        </p>
+        </tr>
 
       {% endfor %}
+      </table>
 
 
     </div>

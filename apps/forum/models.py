@@ -36,6 +36,8 @@ class Post(models.Model):
     """
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    title = models.CharField(max_length=100)
+    body = models.CharField(max_length=5000)
     owner = models.ForeignKey(User
                             ,on_delete='CASCADE'
                             ,related_name="post_owner"
@@ -46,5 +48,22 @@ class Post(models.Model):
                                 ,related_name="categories"
                                 )
 
-    title = models.CharField(max_length=100)
+
+
+class Reply(models.Model):
+    """
+    replys to a post.
+    """
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
     body = models.CharField(max_length=5000)
+    owner = models.ForeignKey(User
+                            ,on_delete='CASCADE'
+                            ,related_name="reply_owner"
+                            )
+
+    post = models.ForeignKey(Post
+                            ,on_delete='CASCADE'
+                            ,related_name="post"
+                            )
+

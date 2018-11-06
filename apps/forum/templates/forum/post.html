@@ -10,52 +10,80 @@
   </head>
   <body>
 
-    <div id="controls" class="bars">
-      <div class="left">
-        <h3>{{ request.user.email }}</h3>
-      </div>
-      <div id="messages">
-        {% if messages %}
-        <ul class="messages">
-          {% for message in messages %}
-          {% if message.tags %}
-          <li class="{{ message.tags }}">{{ message }}</li>
-          {% endif %}
-          {% endfor %}
-        </ul>
-        {% endif %}
-      </div>
-      <div class="right">
-        {% if not request.user.is_authenticated %}
-          <form action="{% url 'forum:login' %}" method="POST">
-            {% csrf_token %}
-            <label>Email:</label>
-            <input type="text" name="username">
-            <label>Password:</label>
-            <input type="password" name="password">
-            <input type="submit" value="Login">
-          </form>
-        {% elif request.user.is_superuser %}
-          <a href={% url 'forum:users' %}>Users</a>
-          <a href="{% url 'admin:index' %}">Admin</a>
-          <a href={% url 'forum:logout' %}>Logout</a>
-        {% endif %}
-      </div>
-    </div>
-
     <div id="container">
 
-      <form action={% url "forum:post" category_id %} method="POST">
-        {% csrf_token %}
-        <label>Title:</label>
-        <input type="text" name="title"></br>
-        <label>Message:</label>
-        <textarea rows="7" cols="100" name="body">
-        </textarea>
-        <input type="submit" value="Post">
-      </form>
+      <div id="controls" class="bars">
+        <div class="left">
+          <h3>{{ request.user.email }}</h3>
+        </div>
+        <div id="messages">
+          {% if messages %}
+          <ul class="messages">
+            {% for message in messages %}
+            {% if message.tags %}
+            <li class="{{ message.tags }}">{{ message }}</li>
+            {% endif %}
+            {% endfor %}
+          </ul>
+          {% endif %}
+        </div>
+        <div class="right">
+          {% if not request.user.is_authenticated %}
+            <form action="{% url 'forum:login' %}" method="POST">
+              {% csrf_token %}
+              <label>Email:</label>
+              <input type="text" name="username">
+              <label>Password:</label>
+              <input type="password" name="password">
+              <input type="submit" value="Login">
+            </form>
+          {% elif request.user.is_superuser %}
+            <a href={% url 'forum:users' %}>Users</a>
+            <a href="{% url 'admin:index' %}">Admin</a>
+            <a href={% url 'forum:logout' %}>Logout</a>
+          {% endif %}
+        </div>
+      </div>
 
-      <a href={% url "forum:index" %}>Back</a>
+      <div>
+        <table class="table-table">
+          <tr>
+            <td class="table_title">
+              <h3>{{ post.title }}</h3>
+            </td>
+            <td class="table_title">
+            </td>
+          </tr>
+          <tr>
+            <td class="poster">
+              <a href="user">{{ post.owner.username }}</a>
+              <h6>Submitted: {{ post.created_at }}</h6>
+            </td>
+            <td>{{ post.body }}</td>
+          </tr>
+          {% for reply in replies %}
+            <tr>
+              <td class="poster">
+                <a href="user">{{ reply.owner.username }}</a>
+                <h6>Submitted: {{ reply.created_at }}</h6>
+              </td>
+              <td>{{ reply.body }}</td>
+            </tr>
+          {% endfor %}
+        </table>
+      </div>
+
+      <div>
+        <form action={% url "forum:reply" category_id post.id %} method="POST">
+          {% csrf_token %}
+          <label>Message:</label>
+          <textarea rows="7" cols="100" name="body">
+          </textarea>
+          <input type="submit" value="Post">
+        </form>
+      </div>
+
+      <a href={% url "forum:categories" category_id %}>Back</a>
 
     </div>
   </body>

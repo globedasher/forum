@@ -8,8 +8,7 @@ from django.db.models import Q
 import datetime, sys
 
 from django.contrib.auth.models import User
-from .models import Category, Post
-
+from .models import Category, Post, Reply
 #from .models import User
 
 def index(request):
@@ -131,11 +130,17 @@ def categories(request, category_id=0):
         messages.error(request, "Not allowed")
         return redirect(reverse('forum:index'))
 
-def post(request, category_id=0):
+def post(request, category_id=0, post_id=0):
     if request.method == "GET":
         print("GET")
         print(category_id)
-        context = {"category_id": category_id}
+        print(post_id)
+        #context = {"category_id": category_id}
+        context = {
+                "category_id": category_id,
+                "post": Post.objects.get(pk=post_id),
+                "replies": Reply.objects.filter(post__pk=post_id)
+                }
         return render(request, "forum/post.html", context)
     elif request.method == "POST":
         #print("POST")
@@ -147,6 +152,29 @@ def post(request, category_id=0):
         new_post.save()
         messages.success(request, "Posted")
         return redirect(reverse('forum:categories', args=[category_id]))
+
+    else:
+        messages.error(request, "Not allowed")
+        return redirect(reverse('forum:index'))
+
+
+def reply(request, category_id=0, post_id=0):
+    if request.method == "GET":
+        messages.error(request, "Not allowed")
+        context = {
+                "category_id": category_id,
+                "post": Post.objects.get(pk=post_id)
+                }
+        return render(request, "forum/post.html", context)
+    elif request.method == "POST":
+        print("POST")
+        owner = request.user
+        post = Post.objects.get(pk=post_id)
+        body = request.POST["body"]
+        new_reply = Reply(owner=owner, post=post, body=body)
+        new_reply.save()
+        messages.success(request, "Posted")
+        return redirect(reverse('forum:post', args=[category_id, post_id]))
 
     else:
         messages.error(request, "Not allowed")

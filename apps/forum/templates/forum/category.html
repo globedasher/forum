@@ -50,26 +50,28 @@
         <h3>{{cat.name}}</h3>
       </div>
 
-      <a href={% url "forum:post" cat.id %}>Create Post</a>
+      <a href={% url "forum:post" cat.id 0 %}>Create Post</a>
       <a href={% url "forum:index" %}>Back</a>
 
       {% for p in post %}
-      <table>
-        <tr>
-          <td class="table_title">
-            <h3>{{ p.title }}</h3>
-          </td>
-          <td class="table_title">
-          </td>
-        </tr>
-        <tr>
-          <td class="poster">
-            <a href="user">{{ p.owner.username }}</a>
-            <h6>Submitted: {{ p.created_at }}</h6>
-          </td>
-          <td>{{ p.body }}</td>
-        </tr>
-      </table>
+      <a href={% url "forum:post" cat.id p.id%}>
+        <table class="table-table">
+          <tr>
+            <td class="table_title">
+              <h3>{{ p.title }}</h3>
+            </td>
+            <td class="table_title">
+            </td>
+          </tr>
+          <tr>
+            <td class="poster">
+              <a href="user">{{ p.owner.username }}</a>
+              <h6>Submitted: {{ p.created_at }}</h6>
+            </td>
+            <td>{{ p.body }}</td>
+          </tr>
+        </table>
+      </a>
       {% endfor %}
 
 
